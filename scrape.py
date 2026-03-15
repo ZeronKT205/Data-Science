@@ -175,10 +175,9 @@ def scrape_movies(start_page: int, end_page: int):
         for link in links:
             movie_data = get_movie_details(link)
 
-            # Làm sạch ngay từ bước crawl:
-            # - Loại bỏ mọi bản ghi có bất kỳ trường nào là "N/A" hoặc rỗng
-            values = list(movie_data.values())
-            if any(v is None or v == "" or v == "N/A" for v in values):
+            # Chỉ loại bỏ các bản ghi không có thông tin ngân sách (Budget)
+            budget_val = movie_data.get("Budget")
+            if budget_val is None or budget_val == "" or budget_val == "N/A" or budget_val == "-":
                 continue
 
             all_movies.append(movie_data)

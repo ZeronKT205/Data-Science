@@ -16,9 +16,9 @@ GK_KHDL/
     └── 01_phan_tich_rating_phim.ipynb
 ```
 
-## Trình tự chạy chương trình
+## Cách sử dụng và quy trình thực hiện
 
-### 1. Thu thập dữ liệu thô (đã thực hiện / cần chạy lại)
+### 1. Thu thập dữ liệu thô
 
 - **Công cụ:** Python 3, thư viện: `requests`, `beautifulsoup4`, `pandas`, `openpyxl`, `lxml`
 - **Cài đặt:**  
@@ -27,16 +27,21 @@ GK_KHDL/
   `python scrape.py`  
   Nhập trang bắt đầu và trang kết thúc (vd: 1 và 50 để lấy >1000 phim). Kết quả lưu ra file `data.xlsx` (hoặc data1.xlsx, data2.xlsx nếu đã tồn tại).
 - **Lưu dữ liệu thô:** Copy file `data.xlsx` vào thư mục **`raw data/`**.
+  
+Trong bước crawl, script `scrape.py` chỉ loại bỏ các bản ghi **không có thông tin ngân sách** (Budget là N/A / rỗng). Các cột khác có thể còn thiếu hoặc ở dạng chuỗi; phần làm sạch chi tiết được xử lý trong notebook.
 
-### 2. Phân tích và làm sạch dữ liệu
+### 2. Phân tích, làm sạch và chuẩn bị dữ liệu
 
 - Cài thư viện: `pip install pandas numpy matplotlib seaborn scikit-learn jupyter openpyxl`
 - Mở Jupyter từ **thư mục gốc** của project (GK_KHDL): `jupyter notebook`  
   Hoặc mở **`notebooks/01_phan_tich_rating_phim.ipynb`**.
 - Chạy **toàn bộ cell** theo thứ tự từ trên xuống (Run All):
-  - Load dữ liệu từ `raw data/data.xlsx`.
-  - Thống kê mô tả, trực quan đơn biến, làm sạch, mã hóa thể loại, feature engineering, trực quan đa biến (heatmap, scatter, lmplot, jointplot, clustermap, t-SNE), kết luận.
-  - Ô cuối cùng lưu dữ liệu đã làm sạch ra **`clean data/movies_clean.xlsx`**.
+  - Đọc dữ liệu từ `raw data/data.xlsx`.
+  - Thống kê mô tả, trực quan đơn biến.
+  - Làm sạch lần 1 (chuẩn hóa kiểu dữ liệu, bỏ missing ở các cột quan trọng, xóa trùng) và lưu `first_clean.xlsx`.
+  - Xác định và lọc outlier (Runtime, Budget, Voting_count), chuẩn hóa định lượng một số biến và lưu `data_after_normalize_clean.xlsx`.
+  - Mã hóa thể loại, xây dựng thêm đặc trưng, trực quan đa biến (heatmap, scatter, clustermap, t-SNE).
+  - Lưu dữ liệu đã làm sạch và chuẩn bị cho mô hình vào **`clean data/movies_clean.xlsx`**.
 
 ### 3. Kết quả cần có
 
